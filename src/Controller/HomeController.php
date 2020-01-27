@@ -12,7 +12,7 @@ use Symfony\Component\Routing\Annotation\Route;
 class HomeController extends AbstractController
 {
     /**
-     * @Route("connexion", name="home_index", methods={"GET", "POST"})
+     * @Route("connexion", name="connexion_index", methods={"GET", "POST"})
      * @param Request $request
      * @return Response
      */
@@ -33,6 +33,17 @@ class HomeController extends AbstractController
         return $this->render('Home/connexion.html.twig', ['formUser'=> $formUser->createView()
         ]);
     }
+
+    /**
+     * @Route("home", name="home_index", methods={"GET", "POST"})
+     * @param Request $request
+     * @return Response
+     */
+    public function index(Request $request): Response {
+
+        return $this->render('Home/home.html.twig');
+    }
+
 
 
 
