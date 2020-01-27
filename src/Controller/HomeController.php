@@ -13,33 +13,71 @@ use Symfony\Component\Routing\Annotation\Route;
 class HomeController extends AbstractController
 {
     /**
-     * @Route("connexion", name="connexion_index", methods={"GET", "POST"})
-     * @param Request $request
-     * @param EntityManagerInterface $entityManager
-     * @return Response
-     */
-    public function create(Request $request, EntityManagerInterface $entityManager): Response {
+          * @Route("inscription", name="inscription_index", methods={"GET", "POST"})
+          * @param Request $request
+          * @param EntityManagerInterface $entityManager
+          * @return Response
+          */
+         public function create(Request $request, EntityManagerInterface $entityManager): Response {
 
-        $user = new User();
+             $user = new User();
 
-        $formUser = $this->createForm(RegisterType::class, $user);
+             $formUser = $this->createForm(RegisterType::class, $user);
+             $formUser->handleRequest($request);
 
-        $formUser->handleRequest($request);
-        if($formUser->isSubmitted() && $formUser->isValid()){
-            $this->addFlash("success", "Utilisateur crée !" );
+             if($formUser->isSubmitted() && $formUser->isValid()){
+                 $this->addFlash("success", "Utilisateur crée !" );
 
-            $entityManager->persist($user);
-            $entityManager->flush();
+                 $entityManager->persist($user);
+                 $entityManager->flush();
 
-            return $this->redirectToRoute("home_index" );
-        }
+                 return $this->redirectToRoute("home_index" );
+             }
 
-    // Appel a la vue
-        return $this->render('Home/connexion.html.twig', ['formUser'=> $formUser->createView()
-        ]);
+             return $this->render('Home/inscription.html.twig', ['formUser'=> $formUser->createView() ]);
 
+         }
 
-    }
+     /**
+      * @Route("connexion", name="connexion_index", methods={"GET", "POST"})
+      * @param Request $request
+      * @param EntityManagerInterface $entityManager
+      * @return Response
+      */
+     public function connexion(Request $request, EntityManagerInterface $entityManager): Response {
+
+        //creer une instance
+         $user = new User();
+
+         //creation d'un formulaire : dans le dossier FORM
+         $formUser = $this->createForm(RegisterType::class, $user);
+         //?
+         $formUser->handleRequest($request);
+
+        //si le formulaire est validé et soumis
+         if($formUser->isSubmitted() && $formUser->isValid()){
+
+            //message en cas de succes
+             $this->addFlash("success", "Utilisateur crée !" );
+
+            //on envoi dans la base de donnéees
+             //$entityManager->persist($user);
+
+             //actualise la bdd
+             //$entityManager->flush();
+
+            //dump($user);
+            //exit();
+            //return $this->redirectToRoute("home_index" );
+
+           // $userCorrespondant = $entityManager->getRepository('App:User')->find();
+
+           //$this->session->set('userName', $user.userName);
+         }
+
+         return $this->render('Home/inscription.html.twig', ['formUser'=> $formUser->createView() ]);
+
+     }
 
     /**
      * @Route("home", name="home_index", methods={"GET", "POST"})
