@@ -2,7 +2,9 @@
 
 
 namespace App\Controller;
+use App\Entity\Annonce;
 use App\Entity\User;
+use App\Form\AddAnnonceType;
 use App\Form\RegisterType;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -12,6 +14,52 @@ use Symfony\Component\Routing\Annotation\Route;
 
 class AnnonceController extends AbstractController
 {
+
+    /**
+     * @Route("mesannonces", name="annonces_index", methods={"GET"})
+     * @param Request $request
+     * @return Response
+     */
+    public function annonces(Request $request): Response {
+        return $this->render('Home/mesannonces.html.twig');
+    }
+
+
+
+
+
+
+    /**
+     * @Route("annonce/add", name="annonce_add", methods={"GET", "POST"})
+     * @param Request $request
+     * @param EntityManagerInterface $entityManager
+     * @return Response
+     */
+
+    public function add(Request $request, EntityManagerInterface $entityManager): Response
+    {
+        $annonce = new Annonce();
+
+        $formAnnonce = $this->createForm(AddAnnonceType::class, $annonce);
+
+        $formAnnonce->handleRequest($request);
+        if($formAnnonce->isSubmitted() && $formAnnonce->isValid()){
+            $this->addFlash("success", "Annonce ajouté" );
+
+            $entityManager->persist($annonce);
+            $entityManager->flush();
+
+            return $this->redirectToRoute("home_index" );
+        }
+
+
+
+        return $this->render( 'Addannonce/addannonce.html.twig',['formAnnonce'=>$formAnnonce->createView()
+        ]);
+    }
+
+
+
 
 
     /**
