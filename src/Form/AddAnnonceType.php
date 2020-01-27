@@ -48,10 +48,7 @@ class AddAnnonceType extends AbstractType
 
             $builder->add('DateCreated', DateType::class, [
                 'required'=>true,
-
             ]);
-
-
 
             $builder->add('Author_id');
 

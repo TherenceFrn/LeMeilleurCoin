@@ -49,7 +49,8 @@ class AnnonceController extends AbstractController
             $entityManager->persist($annonce);
             $entityManager->flush();
 
-            return $this->redirectToRoute("home_index" );
+            $annonce = $entityManager->getRepository('App:Annonce')->find($annonce->getId());
+            return $this->render('Annonce/annonce.html.twig', ['annonce' => $annonce]);
         }
 
 
