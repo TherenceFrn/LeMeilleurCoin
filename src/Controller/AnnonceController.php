@@ -4,6 +4,7 @@
 namespace App\Controller;
 use App\Entity\User;
 use App\Form\RegisterType;
+use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -19,13 +20,29 @@ class AnnonceController extends AbstractController
      * @param Request $request
      * @return Response
      */
-    public function index(Request $request): Response {
+    public function index(Request $request, EntityManagerInterface $entityManager): Response
+    {
 
-        if(null !== $request->get('id')){
-            return $this->render('Annonce/annonce.html.twig',['id'=>$request->get('id')]);
+        //$id = $request->get('id');
+        //return $this->render( 'Annonce/annonce.html.twig', ['id' => $id]);
 
+        if(null !==$request->get('id')){
+
+            $annonce = $entityManager->getRepository('App:Annonce')->find($request->get('id'));
+
+            return $this->render('Annonce/annonce.html.twig', ['annonce' => $annonce]);
         }else{
-            return $this->render('Annonce/annonce.html.twig');
+
+            //$repository = $this->getDoctrine()->getRepository(Annonce::class);
+
+            //$products = $repository->findBy(
+            //    ['nom' => 'premiere'],
+            //);
+
+
+            $annonces = $entityManager->getRepository('App:Annonce')->findAll();
+
+            return $this->render('Annonce/annonce.html.twig', ['annonces' => $annonces]);
         }
 
     }
