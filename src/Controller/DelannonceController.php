@@ -27,8 +27,6 @@ class DelannonceController extends AbstractController
 
             $annonce = $entityManager->getRepository('App:Annonce')->find($request->get('id'));
 
-            dump($annonce);
-
             if($annonce == null){
             }else{
               $entityManager->remove($annonce);
@@ -43,7 +41,6 @@ class DelannonceController extends AbstractController
         }else{
             //s'il n'y a pas d'id :
             $annonces = $entityManager->getRepository('App:Annonce')->findAll();
-
             return $this->render('Delannonce/delannonce.html.twig', ['mesannonces' => $annonces]);
 
         }

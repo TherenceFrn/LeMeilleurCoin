@@ -34,7 +34,7 @@ class HomeController extends AbstractController
             return $this->redirectToRoute("home_index" );
         }
 
-// Appel a la vue
+    // Appel a la vue
         return $this->render('Home/connexion.html.twig', ['formUser'=> $formUser->createView()
         ]);
 
