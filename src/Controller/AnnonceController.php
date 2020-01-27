@@ -16,11 +16,12 @@ class AnnonceController extends AbstractController
 {
 
     /**
-     * @Route("mesannonces", name="annonces_all", methods={"GET"})
-     * @Route("mesannonces/{author_id}", name="annonces_index", methods={"GET"})
+     * @Route("annonce/mesannonces", name="annonces_all", methods={"GET"})
+     * @Route("annonce/mesannonces/{author_id}", name="annonces_index", methods={"GET"})
      * @param Request $request
      * @return Response
      */
+
     public function annonces(Request $request, EntityManagerInterface $entityManager): Response {
 
       if(null !==$request->get('author_id')){
@@ -34,7 +35,6 @@ class AnnonceController extends AbstractController
                 return $this->render('Mesannonces/mesannonces.html.twig', ['mesannonces' => $annonces]);
 
             }
-
     }
 
 
@@ -66,16 +66,9 @@ class AnnonceController extends AbstractController
             return $this->render('Annonce/annonce.html.twig', ['annonce' => $annonce]);
         }
 
+        return $this->render( 'Addannonce/addannonce.html.twig',['formAnnonce'=>$formAnnonce->createView()]);
 
-
-        }
-        return $this->render( 'Addannonce/addannonce.html.twig',['formAnnonce'=>$formAnnonce->createView()
-        ]);
     }
-
-
-
-
 
     /**
      * @Route("annonce", name="annonce_all", methods={"GET"})
@@ -86,8 +79,6 @@ class AnnonceController extends AbstractController
     public function index(Request $request, EntityManagerInterface $entityManager): Response
     {
 
-        //$id = $request->get('id');
-        //return $this->render( 'Annonce/annonce.html.twig', ['id' => $id]);
 
         if(null !==$request->get('id')){
 
@@ -97,19 +88,10 @@ class AnnonceController extends AbstractController
 
         }else{
 
-            //$repository = $this->getDoctrine()->getRepository(Annonce::class);
+                $annonces = $entityManager->getRepository('App:Annonce')->findAll();
 
-            //$products = $repository->findBy(
-            //    ['nom' => 'premiere'],
-            //);
-
-
-            $annonces = $entityManager->getRepository('App:Annonce')->findAll();
-
-            return $this->render('Annonce/annonce.html.twig', ['annonces' => $annonces]);
-        }
+                return $this->render('Annonce/annonce.html.twig', ['annonces' => $annonces]);
+            }
 
         }
-    }
-
 }
