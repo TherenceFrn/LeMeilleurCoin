@@ -54,6 +54,7 @@ class Annonce
     public function __construct()
     {
         $this->Author_id = 1;
+        //$this->Author_id = $request->getSession()->set('id', $user[0]->getId());
         $this->DateCreated = new \DateTime('now');
     }
 

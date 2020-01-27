@@ -105,7 +105,18 @@ class HomeController extends AbstractController
         return $this->render('Home/home.html.twig');
     }
 
+    /**
+     * @Route("reset", name="deconnexion", methods={"GET"})
+     * @param Request $request
+     * @return Response
+     */
+    public function reset(Request $request): Response {
 
+        $request->getSession()->clear();
+
+        return $this->redirectToRoute("home_index");
+
+    }
 
 
 
