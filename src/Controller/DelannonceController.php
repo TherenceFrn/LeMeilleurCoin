@@ -1,6 +1,5 @@
 <?php
 
-
 namespace App\Controller;
 use App\Entity\Annonce;
 use App\Entity\User;
@@ -11,20 +10,21 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
-class MesannoncesController extends AbstractController
+class DelannonceController extends AbstractController
 {
 
     /**
-     * @Route("mesannonces", name="mesannonces_index", methods={"GET"})
+     * @Route("delannonce", name="delannonce_index", methods={"GET"})
      * @param Request $request
      * @return Response
      */
+
     public function index(Request $request, EntityManagerInterface $entityManager): Response
     {
 
         $annonces = $entityManager->getRepository('App:Annonce')->findAll();
 
-        return $this->render('Mesannonces/mesannonces.html.twig', ['mesannonces' => $annonces]);
+        return $this->render('Delannonce/delannonce.html.twig', ['mesannonces' => $annonces]);
     }
 
 }
