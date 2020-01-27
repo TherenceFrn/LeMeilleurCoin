@@ -84,7 +84,9 @@ class AnnonceController extends AbstractController
 
             $annonce = $entityManager->getRepository('App:Annonce')->find($request->get('id'));
 
-            return $this->render('Annonce/annonce.html.twig', ['annonce' => $annonce]);
+            $annonce_author = $entityManager->getRepository('App:User')->find($annonce->getAuthorId());
+
+            return $this->render('Annonce/annonce.html.twig', ['annonce' => $annonce,'author_id'=>$annonce_author]);
 
         }else{
 

@@ -34,7 +34,7 @@
                      <p>Adresse : {{ annonce.city }}, {{ annonce.zip }}</p>
                      <hr class="my-4">
                      <p>Prix : {{ annonce.price }} €</p>
-                     <p>Id author : {{ annonce.authorId }}</p>
+                     <p>Créateur de l'annonce : {{ author_id.username }}</p>
                      <div class="text-right lead">
                         <a href="{{ path('annonce_index', {'id': annonce.id}) }}" class="btn btn-primary">Réserver</a>
                      </div>
