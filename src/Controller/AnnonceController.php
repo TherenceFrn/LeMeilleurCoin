@@ -16,17 +16,26 @@ class AnnonceController extends AbstractController
 {
 
     /**
-     * @Route("mesannonces", name="annonces_index", methods={"GET"})
+     * @Route("annonce/mesannonces", name="annonces_all", methods={"GET"})
+     * @Route("annonce/mesannonces/{author_id}", name="annonces_index", methods={"GET"})
      * @param Request $request
      * @return Response
      */
-    public function annonces(Request $request): Response {
-        return $this->render('Home/mesannonces.html.twig');
+
+    public function annonces(Request $request, EntityManagerInterface $entityManager): Response {
+
+      if(null !==$request->get('author_id')){
+
+                $annonce = $entityManager->getRepository('App:Annonce')->findBy(["Author_id" => $request->get('author_id')], []);
+                return $this->render('Mesannonces/mesannonces.html.twig', ['mesannonces' => $annonce]);
+
+            }else{
+
+                $annonces = $entityManager->getRepository('App:Annonce')->findAll();
+                return $this->render('Mesannonces/mesannonces.html.twig', ['mesannonces' => $annonces]);
+
+            }
     }
-
-
-
-
 
 
     /**
@@ -38,30 +47,28 @@ class AnnonceController extends AbstractController
 
     public function add(Request $request, EntityManagerInterface $entityManager): Response
     {
+
         $annonce = new Annonce();
 
         $formAnnonce = $this->createForm(AddAnnonceType::class, $annonce);
 
         $formAnnonce->handleRequest($request);
+
         if($formAnnonce->isSubmitted() && $formAnnonce->isValid()){
+
             $this->addFlash("success", "Annonce ajouté" );
 
             $entityManager->persist($annonce);
             $entityManager->flush();
+            return $this->redirectToRoute("home_index" );
 
             $annonce = $entityManager->getRepository('App:Annonce')->find($annonce->getId());
             return $this->render('Annonce/annonce.html.twig', ['annonce' => $annonce]);
         }
 
+        return $this->render( 'Addannonce/addannonce.html.twig',['formAnnonce'=>$formAnnonce->createView()]);
 
-
-        return $this->render( 'Addannonce/addannonce.html.twig',['formAnnonce'=>$formAnnonce->createView()
-        ]);
     }
-
-
-
-
 
     /**
      * @Route("annonce", name="annonce_all", methods={"GET"})
@@ -72,28 +79,19 @@ class AnnonceController extends AbstractController
     public function index(Request $request, EntityManagerInterface $entityManager): Response
     {
 
-        //$id = $request->get('id');
-        //return $this->render( 'Annonce/annonce.html.twig', ['id' => $id]);
 
         if(null !==$request->get('id')){
 
             $annonce = $entityManager->getRepository('App:Annonce')->find($request->get('id'));
 
             return $this->render('Annonce/annonce.html.twig', ['annonce' => $annonce]);
+
         }else{
 
-            //$repository = $this->getDoctrine()->getRepository(Annonce::class);
+                $annonces = $entityManager->getRepository('App:Annonce')->findAll();
 
-            //$products = $repository->findBy(
-            //    ['nom' => 'premiere'],
-            //);
+                return $this->render('Annonce/annonce.html.twig', ['annonces' => $annonces]);
+            }
 
-
-            $annonces = $entityManager->getRepository('App:Annonce')->findAll();
-
-            return $this->render('Annonce/annonce.html.twig', ['annonces' => $annonces]);
         }
-
-    }
-
 }
