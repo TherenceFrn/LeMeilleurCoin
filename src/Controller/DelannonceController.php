@@ -14,7 +14,8 @@ class DelannonceController extends AbstractController
 {
 
     /**
-     * @Route("delannonce", name="delannonce_index", methods={"GET"})
+     * @Route("delannonce", name="delannonce_all", methods={"GET"})
+     * @Route("delannonce/{id}", name="delannonce_index", methods={"GET"})
      * @param Request $request
      * @return Response
      */
@@ -22,9 +23,20 @@ class DelannonceController extends AbstractController
     public function index(Request $request, EntityManagerInterface $entityManager): Response
     {
 
-        $annonces = $entityManager->getRepository('App:Annonce')->findAll();
 
-        return $this->render('Delannonce/delannonce.html.twig', ['mesannonces' => $annonces]);
+        if(null !== $request->get('id'))    {
+            //s'il y a un id :
+            $annonces = $entityManager->getRepository('App:Annonce')->findAll();
+
+            return $this->render('Delannonce/delannonce.html.twig', ['mesannonces' => $annonces]);
+
+        }else{
+            //s'il n'y a pas d'id :
+            $annonces = $entityManager->getRepository('App:Annonce')->findAll();
+
+            return $this->render('Delannonce/delannonce.html.twig', ['mesannonces' => $annonces]);
+
+        }
     }
 
 }
