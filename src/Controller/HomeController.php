@@ -9,6 +9,7 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\HttpFoundation\Session\Session;
 
 class HomeController extends AbstractController
 {
@@ -66,13 +67,28 @@ class HomeController extends AbstractController
              //actualise la bdd
              //$entityManager->flush();
 
-            //dump($user);
-            //exit();
-            //return $this->redirectToRoute("home_index" );
+             $user = $entityManager->getRepository('App:User')->findBy(["email" => $user->getEmail(), "password"=> $user->getPassword()]);
 
-           // $userCorrespondant = $entityManager->getRepository('App:User')->find();
 
-           //$this->session->set('userName', $user.userName);
+
+            dump($user);
+
+            if (empty($user)) {
+                 return $this->render('Home/inscription.html.twig', ['formUser'=> $formUser->createView() ]);
+            } else {
+
+                $request->getSession()->set('username', $user[0]->getUsername());
+                $request->getSession()->set('password', $user[0]->getPassword());
+                $request->getSession()->set('email', $user[0]->getEmail());
+                $request->getSession()->set('id', $user[0]->getId());
+
+               //  $this->session->set('username', $user->getUsername());
+               //  $this->session->set('password', $user->getPassword());
+               //  $this->session->set('email', $user->getEmail());
+            }
+
+            return $this->redirectToRoute("home_index" );
+
          }
 
          return $this->render('Home/inscription.html.twig', ['formUser'=> $formUser->createView() ]);

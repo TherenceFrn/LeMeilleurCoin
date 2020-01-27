@@ -26,7 +26,7 @@
                             <a class="nav-link" href="{{ url('annonce_all') }}">Rechercher</a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link" href="{{ url('annonces_all') }}">Mes Annonces</a>
+                            <a href="{{ path('annonces_index', {'author_id': app.session.get('id')}) }}" class="nav-link">Mes annonces</a>
                         </li>
                         <li class="nav-item">
                             <a class="nav-link" href="#">Mes favoris</a>
@@ -38,9 +38,18 @@
                 </div>
                 <div class="navbar-collapse collapse order-3 dual-collapse2">
                     <ul class="navbar-nav ml-auto">
+                        {% if app.session.get('username') is not defined %}
                         <li class="nav-item">
-                            <a class="nav-link" href="{{ url('inscription_index') }}">Connexion/Inscription</a>
+                            <a class="nav-link" href="{{ url('inscription_index') }}">Inscription</a>
                         </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="{{ url('connexion_index') }}">Connexion</a>
+                        </li>
+                        {% else %}
+                            <li class="nav-item">
+                                <a href="#" class="nav-link">Se déconnecter</a>
+                            </li>
+                        {% endif %}
                     </ul>
                 </div>
             </nav>
