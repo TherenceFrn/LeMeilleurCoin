@@ -46,11 +46,6 @@ class AddAnnonceType extends AbstractType
                 'attr'=>['placeHolder'=>'Prix']
             ]);
 
-            $builder->add('DateCreated', DateType::class, [
-                'required'=>true,
-            ]);
-
-            $builder->add('Author_id');
 
         $builder->add('submit', SubmitType::class, [
             'label'=>'Ajouter l\'annonce'

@@ -51,6 +51,12 @@ class Annonce
      */
     private $Author_id;
 
+    public function __construct()
+    {
+        $this->Author_id = 1;
+        $this->DateCreated = new \DateTime('now');
+    }
+
     public function getId(): ?int
     {
         return $this->id;

@@ -8,8 +8,11 @@
          Annonce rajoutée
       </h2>
 
+      {%  form_theme formAnnonce 'bootstrap_4_horizontal_layout.html.twig' %}
       <div class="formulaire">
-         {{ form(formAnnonce) }}
+           {{ form(formAnnonce) }}
       </div>
+
+
    </div>
 {% endblock %}
