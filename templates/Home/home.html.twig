@@ -1,0 +1,20 @@
+{% extends "base.html.twig" %}
+
+{% block title %} Home {% endblock %}
+
+{% block body %}
+
+    <div class="container">
+        <div class="row">
+            <h1 class="col-12 text-center title">
+                Bienvenue sur
+                <strong>Le Meilleur Coin</strong>
+            </h1>
+            <form class="col-12 form-inline">
+                <input class="form-control form-control-sm mr-3 w-75" type="text" placeholder="Chercher une annonce" aria-label="Search">
+                <i class="fas fa-search" aria-hidden="true"></i>
+            </form>
+        </div>
+    </div>
+
+{% endblock %}
