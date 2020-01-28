@@ -32,7 +32,7 @@ class HomeController extends AbstractController
                  $entityManager->persist($user);
                  $entityManager->flush();
 
-                 return $this->redirectToRoute("home_index" );
+                 return $this->redirectToRoute("connexion_index" );
              }
 
              return $this->render('Home/inscription.html.twig', ['formUser'=> $formUser->createView() ]);
