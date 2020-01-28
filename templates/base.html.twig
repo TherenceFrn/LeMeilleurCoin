@@ -44,14 +44,22 @@
                     <ul class="navbar-nav ml-auto">
                         {% if app.session.get('username') is null %}
                             <li class="nav-item">
-                                <a class="nav-link" href="{{ url('inscription_index') }}">Inscription</a>
+                                <a class="nav-link" href="{{ url('inscription_index') }}">
+                                    <i class="fas fa-sign-in-alt"></i>
+                                    Inscription
+                                </a>
                             </li>
                             <li class="nav-item">
-                                <a class="nav-link" href="{{ url('connexion_index') }}">Connexion</a>
+                                <a class="nav-link" href="{{ url('connexion_index') }}">
+                                    <i class="fas fa-user"></i>
+                                    Connexion</a>
                             </li>
                         {% else %}
                             <li class="nav-item">
-                                <a href="{{ url('deconnexion') }}" class="nav-link"><i class="fas fa-sign-out-alt"></i></a>
+                                <a href="{{ url('deconnexion') }}" class="nav-link">
+                                    <i class="fas fa-sign-out-alt"></i>
+                                    Me déconnecter
+                                </a>
                             </li>
                         {% endif %}
                     </ul>
