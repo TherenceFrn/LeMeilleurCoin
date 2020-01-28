@@ -4,9 +4,10 @@
 
 {% block body %}
 
-    <div class="container">
+    {%  form_theme formUser 'bootstrap_4_horizontal_layout.html.twig' %}
 
-        {{ form(formUser) }}
+    <div class="container">
+               {{ form(formUser) }}
 
     </div>
 
