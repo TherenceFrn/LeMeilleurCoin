@@ -11,7 +11,7 @@
                 <strong>Le Meilleur Coin</strong>
             </h1>
 
-            {% if app.session.get('username') is defined %}
+            {% if app.session.get('username') is not null %}
                 <h2 class="col-12 text-center title">
                     Bienvenue {{ app.session.get('username') }}
                 </h2>
