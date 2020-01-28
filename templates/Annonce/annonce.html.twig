@@ -18,6 +18,8 @@
                         <hr class="my-4">
                         <p>Prix : {{ annonce.price }} €</p>
                         <div class="text-right lead">
+                           <button type="button" class="btn btn-warning"> <i class="far fa-star"></i></button>
+
                            <a href="{{ path('annonce_index', {'id': annonce.id}) }}" class="btn btn-primary">Réserver</a>
                         </div>
                      </div>
@@ -36,6 +38,8 @@
                      <p>Prix : {{ annonce.price }} €</p>
                      <p>Créateur de l'annonce : {{ author_id.username }}</p>
                      <div class="text-right lead">
+                        <button type="button" class="btn btn-warning"> <i class="far fa-star"></i></button>
+
                         <a href="{{ path('annonce_index', {'id': annonce.id}) }}" class="btn btn-primary">Réserver</a>
                      </div>
                   </div>

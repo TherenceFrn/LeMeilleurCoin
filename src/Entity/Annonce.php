@@ -3,6 +3,8 @@
 namespace App\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
 
 /**
  * @ORM\Entity(repositoryClass="App\Repository\AnnonceRepository")
@@ -51,10 +53,9 @@ class Annonce
      */
     private $Author_id;
 
-    public function __construct()
+    public function __construct($Author_id)
     {
-        $this->Author_id = 1;
-        //$this->Author_id = $request->getSession()->set('id', $user[0]->getId());
+        $this->Author_id = $Author_id;
         $this->DateCreated = new \DateTime('now');
     }
 

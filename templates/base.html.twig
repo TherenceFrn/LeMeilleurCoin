@@ -32,12 +32,12 @@
                                 Rechercher</a>
                         </li>
                         <li class="nav-item">
-                            {% if app.session.get('username') is not defined %}
+                            {% if app.session.get('username') is null %}
                                 <a href="{{ url('annonces_all') }}" class="nav-link">
                                     <i class="far fa-file"></i>
                                     Mes annonces</a>
                             {% else %}
-                                <a href="{{ url('annonces_all') }}" class="nav-link">
+                                <a href="{{ url('annonces_index', {'author_id':app.session.get('id')}) }}" class="nav-link">
                                     <i class="far fa-file"></i>
                                     Mes annonces</a>
                             {% endif %}

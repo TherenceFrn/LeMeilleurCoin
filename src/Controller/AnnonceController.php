@@ -48,7 +48,7 @@ class AnnonceController extends AbstractController
     public function add(Request $request, EntityManagerInterface $entityManager): Response
     {
 
-        $annonce = new Annonce();
+        $annonce = new Annonce($request->getSession()->get('id'));
 
         $formAnnonce = $this->createForm(AddAnnonceType::class, $annonce);
 
