@@ -2,6 +2,7 @@
 
 
 namespace App\Controller;
+
 use App\Entity\User;
 use App\Form\RegisterType;
 use Doctrine\ORM\EntityManagerInterface;
@@ -26,13 +27,13 @@ class HomeController extends AbstractController
              $formUser = $this->createForm(RegisterType::class, $user);
              $formUser->handleRequest($request);
 
-             if($formUser->isSubmitted() && $formUser->isValid()){
+             if($formUser->isSubmitted() && $formUser->isValid ()){
                  $this->addFlash("success", "Utilisateur crée !" );
 
                  $entityManager->persist($user);
                  $entityManager->flush();
 
-                 return $this->redirectToRoute("home_index" );
+                 return $this->redirectToRoute("connexion_index" );
              }
 
              return $this->render('Home/inscription.html.twig', ['formUser'=> $formUser->createView() ]);
@@ -57,10 +58,6 @@ class HomeController extends AbstractController
 
         //si le formulaire est validé et soumis
          if($formUser->isSubmitted() && $formUser->isValid()){
-
-            //message en cas de succes
-             $this->addFlash("success", "Utilisateur crée !" );
-
             //on envoi dans la base de donnéees
              //$entityManager->persist($user);
 
