@@ -20,23 +20,37 @@
                 <div class="collapse navbar-collapse" id="navbarNav">
                     <ul class="navbar-nav">
                         <li class="nav-item">
-                            <a class="nav-link" href="{{ url('annonce_add') }}">Déposer <span class="sr-only">(current)</span></a>
+                            <a class="nav-link" href="{{ url('annonce_add') }}">
+                                <i class="fas fa-upload"></i>
+                                Déposer
+                                <span class="sr-only">(current)</span>
+                            </a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link" href="{{ url('annonce_all') }}">Rechercher</a>
+                            <a class="nav-link" href="{{ url('annonce_all') }}">
+                                <i class="fas fa-search"></i>
+                                Rechercher</a>
                         </li>
                         <li class="nav-item">
-                            {% if app.session.get('username') is not defined %}
-                                <a href="{{ url('annonces_all') }}" class="nav-link">Mes annonces</a>
+                            {% if app.session.get('username') is null %}
+                                <a href="{{ url('annonces_all') }}" class="nav-link">
+                                    <i class="far fa-file"></i>
+                                    Mes annonces</a>
                             {% else %}
-                                <a href="{{ url('annonces_all') }}" class="nav-link">Mes annonces</a>
+                                <a href="{{ url('annonces_index', {'author_id':app.session.get('id')}) }}" class="nav-link">
+                                    <i class="far fa-file"></i>
+                                    Mes annonces</a>
                             {% endif %}
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link" href="#">Mes favoris</a>
+                            <a class="nav-link" href="#">
+                                <i class="fas fa-star"></i>
+                                Mes favoris</a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link" href="#">FAQ/CGU</a>
+                            <a class="nav-link" href="#">
+                                <i class="fas fa-question"></i>
+                                FAQ/CGU</a>
                         </li>
                     </ul>
                 </div>
@@ -44,14 +58,22 @@
                     <ul class="navbar-nav ml-auto">
                         {% if app.session.get('username') is null %}
                             <li class="nav-item">
-                                <a class="nav-link" href="{{ url('inscription_index') }}">Inscription</a>
+                                <a class="nav-link" href="{{ url('inscription_index') }}">
+                                    <i class="fas fa-sign-in-alt"></i>
+                                    Inscription
+                                </a>
                             </li>
                             <li class="nav-item">
-                                <a class="nav-link" href="{{ url('connexion_index') }}">Connexion</a>
+                                <a class="nav-link" href="{{ url('connexion_index') }}">
+                                    <i class="fas fa-user"></i>
+                                    Connexion</a>
                             </li>
                         {% else %}
                             <li class="nav-item">
-                                <a href="{{ url('deconnexion') }}" class="nav-link"><i class="fas fa-sign-out-alt"></i></a>
+                                <a href="{{ url('deconnexion') }}" class="nav-link">
+                                    <i class="fas fa-sign-out-alt"></i>
+                                    Me déconnecter
+                                </a>
                             </li>
                         {% endif %}
                     </ul>
