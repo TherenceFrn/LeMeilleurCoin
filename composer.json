@@ -15,6 +15,7 @@
         "symfony/maker-bundle": "^1.14",
         "symfony/orm-pack": "^1.0",
         "symfony/requirements-checker": "^1.1",
+        "symfony/security-bundle": "4.4.*",
         "symfony/security-csrf": "4.4.*",
         "symfony/validator": "4.4.*",
         "symfony/yaml": "4.4.*"
