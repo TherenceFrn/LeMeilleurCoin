@@ -3,14 +3,18 @@
 
 namespace App\Controller;
 use App\Entity\Annonce;
+use App\Entity\Recherche;
 use App\Entity\User;
 use App\Form\AddAnnonceType;
+use App\Form\RechercheType;
 use App\Form\RegisterType;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\Form\FormTypeInterface;
+
 
 class AnnonceController extends AbstractController
 {
@@ -82,39 +86,45 @@ class AnnonceController extends AbstractController
     }
 
     /**
-     * @Route("annonce", name="annonce_all", methods={"GET"})
-     * @Route("annonce/{id}", name="annonce_index", requirements={"id": "\d+"}, methods={"GET"})
-     * @route("annonce/{searched_word}", name="annonce_word", methods={"GET"})
+     * @Route("annonce", name="annonce_all", methods={"GET", "POST"})
+     * @Route("annonce/{id}", name="annonce_index", requirements={"id": "\d+"}, methods={"GET", "POST"})
+     * @route("annonce/{searched_word}", name="annonce_word", methods={"GET", "POST"})
      * @param Request $request
      * @return Response
      */
     public function index(Request $request, EntityManagerInterface $entityManager): Response
     {
 
-
         if(null !==$request->get('id')){
-
             //requete par id = nombre
             $annonce = $entityManager->getRepository('App:Annonce')->find($request->get('id'));
             $annonce_author = $entityManager->getRepository('App:User')->find($annonce->getAuthorId());
-
             return $this->render('Annonce/annonce.html.twig', ['annonce' => $annonce,'author_id'=>$annonce_author]);
-
         }else if(null !==$request->get('searched_word')){
             //RECUP GRACE A LA METHODE DQL
             //$annonces = findAnnoncesByWord();
             //$this->repository
-
-
             $annonces = $entityManager->getRepository('App:Annonce')->findAnnoncesByWord($request->get('searched_word'));
-
             //dump($annonces);
-
             return $this->render('Annonce/annonce.html.twig', ['annonces' => $annonces]);
         }else{
-            $annonces = $entityManager->getRepository('App:Annonce')->findAll();
+            //$annonces = $entityManager->getRepository('App:Annonce')->findAll();
+            //return $this->render('Annonce/annonce.html.twig', ['annonces' => $annonces]);
+            $recherche = new Recherche();
 
-            return $this->render('Annonce/annonce.html.twig', ['annonces' => $annonces]);
+            $formAnnonce = $this->createForm(RechercheType::class, $recherche);
+            $formAnnonce->handleRequest($request);
+
+           //dump($formAnnonce);
+
+            if($formAnnonce->isSubmitted()){
+
+                //dump($recherche);
+                //exit();
+                return $this->redirectToRoute("annonce_word", ['searched_word'=>$recherche->getSearchedword()]);
+            }
+
+            return $this->render('Annonce/annonce.html.twig', ['formAnnonce' => $formAnnonce->createView()]);
         }
 
         }
