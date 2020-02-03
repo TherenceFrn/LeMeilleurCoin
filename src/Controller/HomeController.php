@@ -28,7 +28,7 @@ class HomeController extends AbstractController
              $formUser->handleRequest($request);
 
              if($formUser->isSubmitted() && $formUser->isValid ()){
-                 $this->addFlash("success", "Utilisateur crée !" );
+                 $this->addFlash("success", "Utilisateur crée, vous pouvez vous connecter!" );
 
                  $entityManager->persist($user);
                  $entityManager->flush();
