@@ -88,7 +88,7 @@ class AnnonceController extends AbstractController
     /**
      * @Route("annonce", name="annonce_all", methods={"GET", "POST"})
      * @Route("annonce/{id}", name="annonce_index", requirements={"id": "\d+"}, methods={"GET", "POST"})
-     * @route("annonce/{searched_word}", name="annonce_word", methods={"GET", "POST"})
+     * @Route("annonce/{searched_word}", name="annonce_word", methods={"GET", "POST"})
      * @param Request $request
      * @return Response
      */
@@ -128,4 +128,18 @@ class AnnonceController extends AbstractController
         }
 
         }
+
+
+    /**
+     * @Route("favoris", name="favoris_all", methods={"GET", "POST"})
+     * @param Request $request
+     * @return Response
+     */
+
+    public function favoris(Request $request, EntityManagerInterface $entityManager): Response {
+
+            $annonces = $entityManager->getRepository('App:Annonce')->findAnnoncesByWord($request->get('searched_word'));
+            return $this->render('Favoris/favoris.html.twig', ['mesannonces' => $annonces]);
+
+    }
 }

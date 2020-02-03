@@ -2,6 +2,8 @@
 
 namespace App\Entity;
 
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -53,8 +55,16 @@ class Annonce
      */
     private $Author_id;
 
+    /**
+     * @ManyToMany(targetEntity="App/Entity/Category", inversedBy="annonces")
+     * @JoinTable(name="posts_categories")
+     */
+    private Collection $categories;
+
+
     public function __construct($Author_id)
     {
+        $this->categories = new ArrayCollection();
         $this->Author_id = $Author_id;
         $this->DateCreated = new \DateTime('now');
     }
