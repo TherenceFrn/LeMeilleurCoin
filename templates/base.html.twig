@@ -8,6 +8,12 @@
               <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.8.1/css/all.css"
                     integrity="sha384-50oBUHEmvpQ+1lW4y57PTFmhCaXp0ML5d60M1M7uH2+nqUivzIebhndOJK28anvf" crossorigin="anonymous">
               <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
+
+              <style>
+                  .col-6 {
+                      padding: 15px;
+                  }
+              </style>
           {% endblock stylesheet %}
     </head>
     <body>
@@ -32,15 +38,10 @@
                                 Rechercher</a>
                         </li>
                         <li class="nav-item">
-                            {% if app.session.get('username') is null %}
                                 <a href="{{ url('annonces_all') }}" class="nav-link">
                                     <i class="far fa-file"></i>
                                     Mes annonces</a>
-                            {% else %}
-                                <a href="{{ url('annonces_index', {'author_id':app.session.get('id')}) }}" class="nav-link">
-                                    <i class="far fa-file"></i>
-                                    Mes annonces</a>
-                            {% endif %}
+
                         </li>
                         <li class="nav-item">
                             <a class="nav-link" href="#">
@@ -69,6 +70,9 @@
                                     Connexion</a>
                             </li>
                         {% else %}
+                            <li class="nav-item">
+                                <a class="nav-link">{{ app.session.get('username') }}</a>
+                            </li>
                             <li class="nav-item">
                                 <a href="{{ url('deconnexion') }}" class="nav-link">
                                     <i class="fas fa-sign-out-alt"></i>

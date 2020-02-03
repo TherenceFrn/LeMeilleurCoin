@@ -19,6 +19,21 @@ class AnnonceRepository extends ServiceEntityRepository
         parent::__construct($registry, Annonce::class);
     }
 
+    /**
+     * @param string $searchedWord
+     * @return Annonces[]
+     */
+
+    public function findAnnoncesByWord($searchedWord){
+
+        $queryBuilder = $this->createQueryBuilder('u')
+            ->where('u.Title LIKE :title')->setParameter('title', '%'.$searchedWord.'%')
+            ->setMaxResults(10);
+
+        return $queryBuilder->getQuery()->getResult();
+
+    }
+
     // /**
     //  * @return Annonce[] Returns an array of Annonce objects
     //  */
