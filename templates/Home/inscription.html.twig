@@ -6,9 +6,36 @@
 
     {%  form_theme formUser 'bootstrap_4_horizontal_layout.html.twig' %}
 
-    <div class="container">
-               {{ form(formUser) }}
+   <div class="container">
 
-    </div>
+    {{ form_start(formUser) }}
+        <div class="group">
+
+            {{ form_label(formUser.username) }}
+            {{ form_widget(formUser.username) }}
+
+
+            {{ form_label(formUser.email) }}
+            {{ form_widget(formUser.email) }}
+
+
+
+            {{ form_label(formUser.password) }}
+            {{ form_widget(formUser.password) }}
+
+     </div>
+       {{ form_row(formUser.submit) }}
+
+    {{ form_end(formUser) }}
+{% for label, messages in app.flashes %}
+    {% for message in messages %}
+
+            <div class="alert-{{ label }}" style="padding:20px; width:300px; text-align:center; margin: 0 auto;">
+                {{ message }}
+            </div>
+        {% endfor %}
+
+    {% endfor %}
+   </div>
 
 {% endblock %}
