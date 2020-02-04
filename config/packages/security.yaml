@@ -5,11 +5,27 @@ security:
         App\Entity\User:
             algorithm: 'auto'
 
+    providers:
+        users:
+            entity:
+                class: 'App\Entity\User'
 
     firewalls:
         dev:
             pattern: ^/(_(profiler|wdt)|css|images|js)/
             security: false
+
+        main:
+            pattern: ^/
+            provider: users
+            anonymous: ~
+            guard:
+                authenticators:
+                    - App\Security\LoginAuthenticator
+            logout:
+                path: app_logout
+                # where to redirect after logout
+                # target: app_any_route
 
 
             # activate different ways to authenticate
