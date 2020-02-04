@@ -11,6 +11,7 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\HttpFoundation\Session\Session;
+use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
 
 class HomeController extends AbstractController
 {
@@ -20,7 +21,7 @@ class HomeController extends AbstractController
           * @param EntityManagerInterface $entityManager
           * @return Response
           */
-         public function create(Request $request, EntityManagerInterface $entityManager): Response {
+         public function create(Request $request, UserPasswordEncoderInterface $encoder, EntityManagerInterface $entityManager): Response {
 
              $user = new User();
 
@@ -28,6 +29,10 @@ class HomeController extends AbstractController
              $formUser->handleRequest($request);
 
              if($formUser->isSubmitted() && $formUser->isValid ()){
+
+                 $password = $encoder->encodePassword($user, $user->getPassword());
+                 $user->setPassword($password);
+
                  $this->addFlash("success", "Utilisateur crée, vous pouvez vous connecter!" );
 
                  $entityManager->persist($user);
