@@ -108,16 +108,13 @@ class HomeController extends AbstractController
     }
 
     /**
-     * @Route("reset", name="deconnexion", methods={"GET"})
-     * @param Request $request
+     * @Route("admin", name="admin", methods={"GET"})
      * @return Response
      */
-    public function reset(Request $request): Response {
-
-        $request->getSession()->clear();
-
-        return $this->redirectToRoute("home_index");
-
+    public function admin(): Response
+    {
+        $this->denyAccessUnlessGranted("ROLE_ADMIN");
+        return $this->render('Mesannonces/mesannonces.html.twig');
     }
 
 
