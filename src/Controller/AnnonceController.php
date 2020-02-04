@@ -99,6 +99,9 @@ class AnnonceController extends AbstractController
             //requete par id = nombre
             $annonce = $entityManager->getRepository('App:Annonce')->find($request->get('id'));
             $annonce_author = $entityManager->getRepository('App:User')->find($annonce->getAuthorId());
+
+            // dump($annonce);
+            // exit();
             return $this->render('Annonce/annonce.html.twig', ['annonce' => $annonce,'author_id'=>$annonce_author]);
         }else if(null !==$request->get('searched_word')){
             //RECUP GRACE A LA METHODE DQL

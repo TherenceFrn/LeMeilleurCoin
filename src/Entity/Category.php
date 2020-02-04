@@ -4,6 +4,7 @@ namespace App\Entity;
 
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\Mapping as ORM;
+use Doctrine\ORM\Mapping\ManyToMany;
 
 /**
  * @ORM\Entity(repositoryClass="App\Repository\CategoryRepository")
@@ -23,9 +24,9 @@ class Category
     private $title;
 
     /**
-     * @ManyToMany(targetEntity="App/Entity/Annonce", mappedBy="categories")
+     * @ManyToMany(targetEntity="App\Entity\Annonce", mappedBy="categories")
      */
-    private Collection $annonces;
+    private $annonces;
 
     public function __construct()
     {
