@@ -2,7 +2,14 @@
 
 namespace App\Entity;
 
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
+use Doctrine\ORM\Mapping\JoinColumn;
+use Doctrine\ORM\Mapping\JoinTable;
+use Doctrine\ORM\Mapping\ManyToMany;
+use Doctrine\ORM\Mapping\ManyToOne;
+use Doctrine\ORM\Mapping\OneToMany;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 
@@ -53,11 +60,39 @@ class Annonce
      */
     private $Author_id;
 
+    /**
+     * @ORM\ManyToMany(targetEntity="App\Entity\Category", cascade={"persist"})
+     */
+    private $Categories;
+
     public function __construct($Author_id)
     {
+        $this->Categories = new ArrayCollection();
         $this->Author_id = $Author_id;
         $this->DateCreated = new \DateTime('now');
     }
+
+    // Notez le singulier, on ajoute une seule catégorie à la fois
+    public function addCategory(Category $category)
+    {
+        // Ici, on utilise l'ArrayCollection vraiment comme un tableau
+        $this->categories[] = $category;
+
+        return $this;
+    }
+
+    public function removeCategory(Category $category)
+    {
+        // Ici on utilise une méthode de l'ArrayCollection, pour supprimer la catégorie en argument
+        $this->categories->removeElement($category);
+    }
+
+    // Notez le pluriel, on récupère une liste de catégories ici !
+    public function getCategories()
+    {
+        return $this->categories;
+    }
+
 
     public function getId(): ?int
     {

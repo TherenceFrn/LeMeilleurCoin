@@ -28,6 +28,8 @@ class AnnonceRepository extends ServiceEntityRepository
 
         $queryBuilder = $this->createQueryBuilder('u')
             ->where('u.Title LIKE :title')->setParameter('title', '%'.$searchedWord.'%')
+            ->orWhere('u.Description LIKE :description')->setParameter('description', '%'.$searchedWord.'%')
+            ->orWhere('u.City LIKE :city')->setParameter('city', '%'.$searchedWord.'%')
             ->setMaxResults(10);
 
         return $queryBuilder->getQuery()->getResult();
