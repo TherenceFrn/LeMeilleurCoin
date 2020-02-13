@@ -23,6 +23,10 @@ class HomeController extends AbstractController
           */
          public function create(Request $request, UserPasswordEncoderInterface $encoder, EntityManagerInterface $entityManager): Response {
 
+             if ($this->getUser()) {
+                 return $this->redirectToRoute('home_index');
+             }
+
              $user = new User();
 
              $formUser = $this->createForm(RegisterType::class, $user);

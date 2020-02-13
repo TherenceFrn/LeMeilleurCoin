@@ -10,6 +10,7 @@ security:
             entity:
                 class: 'App\Entity\User'
 
+
     firewalls:
         dev:
             pattern: ^/(_(profiler|wdt)|css|images|js)/
@@ -22,7 +23,19 @@ security:
             guard:
                 authenticators:
                     - App\Security\LoginAuthenticator
-                # where to redirect after logout
+            logout:
+                path: /logout
+                target: /home
+                invalidate_session: true
+
+    role_hierarchy:
+        ROLE_USER: [IS_AUTHENTICATED_FULLY]
+        ROLE_ADMIN: [ROLE_USER]
+
+    access_control:
+        - {path: ^/admin, roles: ROLE_ADMIN}
+        - {path: ^/annonce, roles: ROLE_USER}
+              # where to redirect after logout
                 # target: app_any_route
 
 
