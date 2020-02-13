@@ -3,6 +3,9 @@
 namespace App\Form;
 
 use App\Entity\Annonce;
+use App\Entity\Category;
+use Doctrine\ORM\EntityRepository;
+use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\NumberType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
@@ -15,10 +18,10 @@ class AddAnnonceType extends AbstractType
 {
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
-        $builder->add('Title', TextType::class, [
-            'required'=>true,
-            'attr'=>['placeHolder'=>"Titre", 'maxlength'=>200]
-        ]);
+            $builder->add('Title', TextType::class, [
+                'required'=>true,
+                'attr'=>['placeHolder'=>"Titre", 'maxlength'=>200]
+            ]);
 
 
 
@@ -45,6 +48,16 @@ class AddAnnonceType extends AbstractType
                 'required'=>true,
                 'attr'=>['placeHolder'=>'Prix']
             ]);
+
+        $builder->add('categories', EntityType::class, [
+            'class' => Category::class,
+            'multiple' => true,
+            'query_builder' => function (EntityRepository $er) {
+                return $er->createQueryBuilder('c')
+                    ->orderBy('c.title', 'ASC');
+            },
+            'choice_label' => 'title',
+        ]);
 
 
         $builder->add('submit', SubmitType::class, [

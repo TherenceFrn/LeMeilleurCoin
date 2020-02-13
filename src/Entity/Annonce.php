@@ -61,38 +61,16 @@ class Annonce
     private $Author_id;
 
     /**
-     * @ORM\ManyToMany(targetEntity="App\Entity\Category", cascade={"persist"})
+     * @ORM\ManyToMany(targetEntity="App\Entity\Category", inversedBy="annonces")
      */
-    private $Categories;
+    private $categories;
 
-    public function __construct($Author_id)
-    {
-        $this->Categories = new ArrayCollection();
+     public function __construct($Author_id)
+     {
         $this->Author_id = $Author_id;
         $this->DateCreated = new \DateTime('now');
-    }
-
-    // Notez le singulier, on ajoute une seule catégorie à la fois
-    public function addCategory(Category $category)
-    {
-        // Ici, on utilise l'ArrayCollection vraiment comme un tableau
-        $this->categories[] = $category;
-
-        return $this;
-    }
-
-    public function removeCategory(Category $category)
-    {
-        // Ici on utilise une méthode de l'ArrayCollection, pour supprimer la catégorie en argument
-        $this->categories->removeElement($category);
-    }
-
-    // Notez le pluriel, on récupère une liste de catégories ici !
-    public function getCategories()
-    {
-        return $this->categories;
-    }
-
+        $this->categories = new ArrayCollection();
+     }
 
     public function getId(): ?int
     {
@@ -179,6 +157,32 @@ class Annonce
     public function setAuthorId(int $Author_id): self
     {
         $this->Author_id = $Author_id;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|Category[]
+     */
+    public function getCategories(): Collection
+    {
+        return $this->categories;
+    }
+
+    public function addCategory(Category $category): self
+    {
+        if (!$this->categories->contains($category)) {
+            $this->categories[] = $category;
+        }
+
+        return $this;
+    }
+
+    public function removeCategory(Category $category): self
+    {
+        if ($this->categories->contains($category)) {
+            $this->categories->removeElement($category);
+        }
 
         return $this;
     }

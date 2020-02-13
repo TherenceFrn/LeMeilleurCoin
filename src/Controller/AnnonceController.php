@@ -3,6 +3,7 @@
 
 namespace App\Controller;
 use App\Entity\Annonce;
+use App\Entity\Category;
 use App\Entity\Recherche;
 use App\Entity\User;
 use App\Form\AddAnnonceType;
@@ -36,6 +37,9 @@ class AnnonceController extends AbstractController
             }else{
 
                 $annonces = $entityManager->getRepository('App:Annonce')->findAll();
+                $annonces_c = $entityManager->getRepository('App:Category')->findAll();
+                //dump($annonces);
+                //exit();
                 return $this->render('Mesannonces/mesannonces.html.twig', ['mesannonces' => $annonces]);
 
             }
@@ -54,8 +58,8 @@ class AnnonceController extends AbstractController
 
         if($request->getSession()->get('id') !== null){
 
-
         $annonce = new Annonce($request->getSession()->get('id'));
+        $categorie = new Category();
 
         $formAnnonce = $this->createForm(AddAnnonceType::class, $annonce);
 
@@ -67,10 +71,12 @@ class AnnonceController extends AbstractController
 
             $entityManager->persist($annonce);
             $entityManager->flush();
-            return $this->redirectToRoute("home_index" );
+
+            //return $this->redirectToRoute("home_index" );
 
             $annonce = $entityManager->getRepository('App:Annonce')->find($annonce->getId());
-            return $this->render('Annonce/annonce.html.twig', ['annonce' => $annonce]);
+            $annonce_author = $entityManager->getRepository('App:User')->find($annonce->getAuthorId());
+            return $this->render('Annonce/annonce.html.twig', ['annonce' => $annonce,'author_id'=>$annonce_author]);
         }
 
         return $this->render( 'Addannonce/addannonce.html.twig',['formAnnonce'=>$formAnnonce->createView()]);
