@@ -22,7 +22,7 @@
                 <th scope="col">Date_Created</th>
                 <th scope="col">Author_id</th>
                 <th scope="col">Voir</th>
-                <th scope="col">Editer</th>
+                <th scope="col">Supprimer</th>
             </tr>
             </thead>
     {% if mesannonces is defined %}
@@ -42,7 +42,7 @@
 
 
                     <th><a class="btn btn-success" href="{{ path('annonce_index', {'id': annonce.id}) }}">Voir</a></th>
-                    <th><a class="btn btn-secondary" href="{{ path('annonce_index', {'id': annonce.id}) }}">Editer</a></th>
+                    <th><a class="btn btn-danger" href="{{ path('delannonce_index', {'id': annonce.id}) }}">Supprimer</a></th>
                 </tr>
             {% endfor %}
             </tbody>

@@ -65,11 +65,17 @@ class Annonce
      */
     private $categories;
 
+    /**
+     * @ORM\ManyToMany(targetEntity="App\Entity\Favoris", mappedBy="annonces")
+     */
+    private $favoris;
+
      public function __construct($Author_id)
      {
         $this->Author_id = $Author_id;
         $this->DateCreated = new \DateTime('now');
         $this->categories = new ArrayCollection();
+        $this->favoris = new ArrayCollection();
      }
 
     public function getId(): ?int
@@ -182,6 +188,34 @@ class Annonce
     {
         if ($this->categories->contains($category)) {
             $this->categories->removeElement($category);
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|Favoris[]
+     */
+    public function getFavoris(): Collection
+    {
+        return $this->favoris;
+    }
+
+    public function addFavori(Favoris $favori): self
+    {
+        if (!$this->favoris->contains($favori)) {
+            $this->favoris[] = $favori;
+            $favori->addAnnonce($this);
+        }
+
+        return $this;
+    }
+
+    public function removeFavori(Favoris $favori): self
+    {
+        if ($this->favoris->contains($favori)) {
+            $this->favoris->removeElement($favori);
+            $favori->removeAnnonce($this);
         }
 
         return $this;

@@ -29,20 +29,20 @@ class AnnonceController extends AbstractController
 
     public function annonces(Request $request, EntityManagerInterface $entityManager): Response {
 
-      if(null !==$request->get('author_id')){
+        if(null !==$request->get('author_id')){
 
-                $annonce = $entityManager->getRepository('App:Annonce')->findBy(["Author_id" => $request->get('author_id')], []);
-                return $this->render('Mesannonces/mesannonces.html.twig', ['mesannonces' => $annonce]);
+            $annonce = $entityManager->getRepository('App:Annonce')->findBy(["Author_id" => $request->get('author_id')], []);
+            return $this->render('Mesannonces/mesannonces.html.twig', ['mesannonces' => $annonce]);
 
-            }else{
+        }else{
 
-                $annonces = $entityManager->getRepository('App:Annonce')->findAll();
-                $annonces_c = $entityManager->getRepository('App:Category')->findAll();
-                //dump($annonces);
-                //exit();
-                return $this->render('Mesannonces/mesannonces.html.twig', ['mesannonces' => $annonces]);
+            $annonces = $entityManager->getRepository('App:Annonce')->findAll();
+            $annonces_c = $entityManager->getRepository('App:Category')->findAll();
+            //dump($annonces);
+            //exit();
+            return $this->render('Mesannonces/mesannonces.html.twig', ['mesannonces' => $annonces]);
 
-            }
+        }
     }
 
 
@@ -58,28 +58,28 @@ class AnnonceController extends AbstractController
 
         if($request->getSession()->get('id') !== null){
 
-        $annonce = new Annonce($request->getSession()->get('id'));
-        $categorie = new Category();
+            $annonce = new Annonce($request->getSession()->get('id'));
+            $categorie = new Category();
 
-        $formAnnonce = $this->createForm(AddAnnonceType::class, $annonce);
+            $formAnnonce = $this->createForm(AddAnnonceType::class, $annonce);
 
-        $formAnnonce->handleRequest($request);
+            $formAnnonce->handleRequest($request);
 
-        if($formAnnonce->isSubmitted() && $formAnnonce->isValid()){
+            if($formAnnonce->isSubmitted() && $formAnnonce->isValid()){
 
-            $this->addFlash("success", "Annonce ajouté" );
+                $this->addFlash("success", "Annonce ajouté" );
 
-            $entityManager->persist($annonce);
-            $entityManager->flush();
+                $entityManager->persist($annonce);
+                $entityManager->flush();
 
-            //return $this->redirectToRoute("home_index" );
+                //return $this->redirectToRoute("home_index" );
 
-            $annonce = $entityManager->getRepository('App:Annonce')->find($annonce->getId());
-            $annonce_author = $entityManager->getRepository('App:User')->find($annonce->getAuthorId());
-            return $this->render('Annonce/annonce.html.twig', ['annonce' => $annonce,'author_id'=>$annonce_author]);
-        }
+                $annonce = $entityManager->getRepository('App:Annonce')->find($annonce->getId());
+                $annonce_author = $entityManager->getRepository('App:User')->find($annonce->getAuthorId());
+                return $this->render('Annonce/annonce.html.twig', ['annonce' => $annonce,'author_id'=>$annonce_author]);
+            }
 
-        return $this->render( 'Addannonce/addannonce.html.twig',['formAnnonce'=>$formAnnonce->createView()]);
+            return $this->render( 'Addannonce/addannonce.html.twig',['formAnnonce'=>$formAnnonce->createView()]);
 
         }else{
 
@@ -104,14 +104,20 @@ class AnnonceController extends AbstractController
         if(null !==$request->get('id')){
             //requete par id = nombre
             $annonce = $entityManager->getRepository('App:Annonce')->find($request->get('id'));
-            $annonce_author = $entityManager->getRepository('App:User')->find($annonce->getAuthorId());
+
+            if($annonce == null){
+                return $this->redirectToRoute('annonce_all');
+            }else{
+                $annonce_author = $entityManager->getRepository('App:User')->find($annonce->getAuthorId());
+            }
+
             return $this->render('Annonce/annonce.html.twig', ['annonce' => $annonce,'author_id'=>$annonce_author]);
+
         }else if(null !==$request->get('searched_word')){
             //RECUP GRACE A LA METHODE DQL
             //$annonces = findAnnoncesByWord();
             //$this->repository
             $annonces = $entityManager->getRepository('App:Annonce')->findAnnoncesByWord($request->get('searched_word'));
-            //dump($annonces);
             return $this->render('Annonce/annonce.html.twig', ['annonces' => $annonces]);
         }else{
             //$annonces = $entityManager->getRepository('App:Annonce')->findAll();
@@ -121,7 +127,7 @@ class AnnonceController extends AbstractController
             $formAnnonce = $this->createForm(RechercheType::class, $recherche);
             $formAnnonce->handleRequest($request);
 
-           //dump($formAnnonce);
+            //dump($formAnnonce);
 
             if($formAnnonce->isSubmitted()){
 
@@ -133,7 +139,7 @@ class AnnonceController extends AbstractController
             return $this->render('Annonce/annonce.html.twig', ['formAnnonce' => $formAnnonce->createView()]);
         }
 
-        }
+    }
 
 
     /**
@@ -144,8 +150,8 @@ class AnnonceController extends AbstractController
 
     public function favoris(Request $request, EntityManagerInterface $entityManager): Response {
 
-            $annonces = $entityManager->getRepository('App:Annonce')->findAnnoncesByWord($request->get('searched_word'));
-            return $this->render('Favoris/favoris.html.twig', ['mesannonces' => $annonces]);
+        $annonces = $entityManager->getRepository('App:Annonce')->findAnnoncesByWord($request->get('searched_word'));
+        return $this->render('Favoris/favoris.html.twig', ['mesannonces' => $annonces]);
 
     }
 }

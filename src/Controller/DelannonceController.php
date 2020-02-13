@@ -34,14 +34,14 @@ class DelannonceController extends AbstractController
             }
 
 
-            $annonces = $entityManager->getRepository('App:Annonce')->findAll();
-            return $this->render('Delannonce/delannonce.html.twig', ['mesannonces' => $annonces]);
+            $annonce = $entityManager->getRepository('App:Annonce')->findBy(["Author_id" => $request->get('author_id')], []);
+            return $this->render('Mesannonces/mesannonces.html.twig', ['mesannonces' => $annonce]);
 
 
         }else{
             //s'il n'y a pas d'id :
-            $annonces = $entityManager->getRepository('App:Annonce')->findAll();
-            return $this->render('Delannonce/delannonce.html.twig', ['mesannonces' => $annonces]);
+            $annonce = $entityManager->getRepository('App:Annonce')->findBy(["Author_id" => $request->get('author_id')], []);
+            return $this->render('Mesannonces/mesannonces.html.twig', ['mesannonces' => $annonce]);
 
         }
     }
