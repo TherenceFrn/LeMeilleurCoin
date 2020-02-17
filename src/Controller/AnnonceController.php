@@ -17,6 +17,9 @@ use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Form\FormTypeInterface;
 
 
+/**
+ * @method getFavorites()
+ */
 class AnnonceController extends AbstractController
 {
 
@@ -56,7 +59,7 @@ class AnnonceController extends AbstractController
     public function add(Request $request, EntityManagerInterface $entityManager): Response
     {
 
-        if($request->getSession()->get('id') !== null){
+        if($this->getUser() !== null){
 
             $annonce = new Annonce($request->getSession()->get('id'));
             $categorie = new Category();
@@ -177,4 +180,24 @@ class AnnonceController extends AbstractController
 
             return $this->render('Annonce/annonce.html.twig', ['annonce' => $annonce,'author_id'=>$annonce_author]);
     }
+
+    /**
+     * @Route("mesfavoris", name="mesfavoris", methods={"GET"})
+     * @param Request $request
+     * @param EntityManagerInterface $entityManager
+     * @return Response
+     */
+
+    public function mesfavoris(Request $request, EntityManagerInterface $entityManager): Response {
+        $user = $this->getUser();
+        $annonces = $user->getFavorites();
+
+        //dump($annonces);
+        //exit();
+
+        return $this->render('Favoris/favoris.html.twig', ['mesannonces' => $annonces]);
+
+    }
+
+
 }
