@@ -25,27 +25,17 @@ class AnnonceController extends AbstractController
 
     /**
      * @Route("annonce/mesannonces", name="annonces_all", methods={"GET"})
-     * @Route("annonce/mesannonces/{author_id}", name="annonces_index", methods={"GET"})
      * @param Request $request
      * @return Response
      */
 
     public function annonces(Request $request, EntityManagerInterface $entityManager): Response {
 
-        if(null !==$request->get('author_id')){
 
-            $annonce = $entityManager->getRepository('App:Annonce')->findBy(["Author_id" => $request->get('author_id')], []);
-            return $this->render('Mesannonces/mesannonces.html.twig', ['mesannonces' => $annonce]);
 
-        }else{
-
-            $annonces = $entityManager->getRepository('App:Annonce')->findAll();
-            $annonces_c = $entityManager->getRepository('App:Category')->findAll();
-            //dump($annonces);
-            //exit();
+            $annonces = $entityManager->getRepository('App:Annonce')->findBy(["Author_id" => $this->getUser()->getId()], []);
             return $this->render('Mesannonces/mesannonces.html.twig', ['mesannonces' => $annonces]);
 
-        }
     }
 
 
@@ -61,8 +51,7 @@ class AnnonceController extends AbstractController
 
         if($this->getUser() !== null){
 
-            $annonce = new Annonce($request->getSession()->get('id'));
-            $categorie = new Category();
+            $annonce = new Annonce($this->getUser()->getId());
 
             $formAnnonce = $this->createForm(AddAnnonceType::class, $annonce);
 
