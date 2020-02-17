@@ -67,7 +67,7 @@
                 </div>
                 <div class="navbar-collapse collapse order-3 dual-collapse2">
                     <ul class="navbar-nav ml-auto">
-                        {% if app.session.get('username') is null %}
+                        {% if app.user is null %}
                             <li class="nav-item">
                                 <a class="nav-link" href="{{ url('inscription_index') }}">
                                     <i class="fas fa-sign-in-alt"></i>
@@ -75,16 +75,16 @@
                                 </a>
                             </li>
                             <li class="nav-item">
-                                <a class="nav-link" href="{{ url('connexion_index') }}">
+                                <a class="nav-link" href="{{ url('app_login') }}">
                                     <i class="fas fa-user"></i>
                                     Connexion</a>
                             </li>
                         {% else %}
                             <li class="nav-item">
-                                <a class="nav-link">{{ app.session.get('username') }}</a>
+                                <a class="nav-link">{{ app.user.username }}</a>
                             </li>
                             <li class="nav-item">
-                                <a href="{{ url('deconnexion') }}" class="nav-link">
+                                <a href="{{ url('app_logout') }}" class="nav-link">
                                     <i class="fas fa-sign-out-alt"></i>
                                     Me déconnecter
                                 </a>

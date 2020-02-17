@@ -11,6 +11,7 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\HttpFoundation\Session\Session;
+use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
 
 class HomeController extends AbstractController
 {
@@ -20,7 +21,11 @@ class HomeController extends AbstractController
           * @param EntityManagerInterface $entityManager
           * @return Response
           */
-         public function create(Request $request, EntityManagerInterface $entityManager): Response {
+         public function create(Request $request, UserPasswordEncoderInterface $encoder, EntityManagerInterface $entityManager): Response {
+
+             if ($this->getUser()) {
+                 return $this->redirectToRoute('home_index');
+             }
 
              $user = new User();
 
@@ -28,6 +33,10 @@ class HomeController extends AbstractController
              $formUser->handleRequest($request);
 
              if($formUser->isSubmitted() && $formUser->isValid ()){
+
+                 $password = $encoder->encodePassword($user, $user->getPassword());
+                 $user->setPassword($password);
+
                  $this->addFlash("success", "Utilisateur crée, vous pouvez vous connecter!" );
 
                  $entityManager->persist($user);
@@ -103,16 +112,13 @@ class HomeController extends AbstractController
     }
 
     /**
-     * @Route("reset", name="deconnexion", methods={"GET"})
-     * @param Request $request
+     * @Route("admin", name="admin", methods={"GET"})
      * @return Response
      */
-    public function reset(Request $request): Response {
-
-        $request->getSession()->clear();
-
-        return $this->redirectToRoute("home_index");
-
+    public function admin(): Response
+    {
+        $this->denyAccessUnlessGranted("ROLE_ADMIN");
+        return $this->render('Mesannonces/mesannonces.html.twig');
     }
 
 
