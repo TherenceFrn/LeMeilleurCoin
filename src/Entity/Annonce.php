@@ -70,12 +70,18 @@ class Annonce
      */
     private $favoris;
 
+    /**
+     * @ORM\ManyToMany(targetEntity="App\Entity\User", mappedBy="favorites")
+     */
+    private $favorites;
+
      public function __construct($Author_id)
      {
         $this->Author_id = $Author_id;
         $this->DateCreated = new \DateTime('now');
         $this->categories = new ArrayCollection();
         $this->favoris = new ArrayCollection();
+        $this->favorites = new ArrayCollection();
      }
 
     public function getId(): ?int
@@ -216,6 +222,34 @@ class Annonce
         if ($this->favoris->contains($favori)) {
             $this->favoris->removeElement($favori);
             $favori->removeAnnonce($this);
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|User[]
+     */
+    public function getFavorites(): Collection
+    {
+        return $this->favorites;
+    }
+
+    public function addFavorite(User $favorite): self
+    {
+        if (!$this->favorites->contains($favorite)) {
+            $this->favorites[] = $favorite;
+            $favorite->addFavorite($this);
+        }
+
+        return $this;
+    }
+
+    public function removeFavorite(User $favorite): self
+    {
+        if ($this->favorites->contains($favorite)) {
+            $this->favorites->removeElement($favorite);
+            $favorite->removeFavorite($this);
         }
 
         return $this;

@@ -2,6 +2,8 @@
 
 namespace App\Entity;
 
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Symfony\Component\Security\Core\User\UserInterface;
@@ -58,6 +60,16 @@ class User implements UserInterface
      * @ORM\Column(type="array")
      */
 private $roles = ['ROLE_USER'];
+
+/**
+ * @ORM\ManyToMany(targetEntity="App\Entity\Annonce", inversedBy="favorites")
+ */
+private $favorites;
+
+public function __construct()
+{
+    $this->favorites = new ArrayCollection();
+}
 
 
     public function getId(): ?int
@@ -123,5 +135,31 @@ private $roles = ['ROLE_USER'];
     public function eraseCredentials()
     {
         // TODO: Implement eraseCredentials() method.
+    }
+
+    /**
+     * @return Collection|Annonce[]
+     */
+    public function getFavorites(): Collection
+    {
+        return $this->favorites;
+    }
+
+    public function addFavorite(Annonce $favorite): self
+    {
+        if (!$this->favorites->contains($favorite)) {
+            $this->favorites[] = $favorite;
+        }
+
+        return $this;
+    }
+
+    public function removeFavorite(Annonce $favorite): self
+    {
+        if ($this->favorites->contains($favorite)) {
+            $this->favorites->removeElement($favorite);
+        }
+
+        return $this;
     }
 }

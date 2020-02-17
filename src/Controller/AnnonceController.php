@@ -143,15 +143,38 @@ class AnnonceController extends AbstractController
 
 
     /**
-     * @Route("favoris", name="favoris_all", methods={"GET", "POST"})
+     * @Route("favoris/{id}", name="favoris_index", requirements={"id": "\d+"}, methods={"GET"})
      * @param Request $request
+     * @param EntityManagerInterface $entityManager
      * @return Response
      */
 
     public function favoris(Request $request, EntityManagerInterface $entityManager): Response {
 
-        $annonces = $entityManager->getRepository('App:Annonce')->findAnnoncesByWord($request->get('searched_word'));
-        return $this->render('Favoris/favoris.html.twig', ['mesannonces' => $annonces]);
+            // Récupérer l'annonce
+            $annonce = $entityManager->getRepository('App:Annonce')->find($request->get('id'));
 
+            // Récupérer l'utilisateur
+            /** @var User $user */
+            $user = $this->getUser();
+
+            // Vérifier si l'utilisateur a déjà l'annonce en favoris
+            if (!$user->getFavorites()->contains($annonce)) {
+                $user->addFavorite($annonce);
+            } else {
+                $user->removeFavorite($annonce);
+            }
+
+            $entityManager->flush();
+
+            $annonce = $entityManager->getRepository('App:Annonce')->find($request->get('id'));
+
+            if($annonce == null){
+                return $this->redirectToRoute('annonce_all');
+            }else{
+                $annonce_author = $entityManager->getRepository('App:User')->find($annonce->getAuthorId());
+            }
+
+            return $this->render('Annonce/annonce.html.twig', ['annonce' => $annonce,'author_id'=>$annonce_author]);
     }
 }
